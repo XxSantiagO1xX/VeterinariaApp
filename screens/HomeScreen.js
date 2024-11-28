@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, Button, TouchableWithoutFeedback, Keyboard, TextInput, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, Button, TouchableWithoutFeedback, Keyboard, TextInput, Dimensions, StatusBar } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import Svg, { Path, Defs, LinearGradient, Stop } from 'react-native-svg';
 
@@ -30,7 +30,7 @@ function SvgTop() {
         </LinearGradient>
       </Defs>
     </Svg>
-  )
+  );
 }
 
 const HomeScreen = ({ navigation }) => {
@@ -39,8 +39,6 @@ const HomeScreen = ({ navigation }) => {
   const [selectedPet, setSelectedPet] = useState('');
   const [isPetInputVisible, setIsPetInputVisible] = useState(false);
 
-
-
   // Función para manejar la selección de fecha
   const handleDateSelect = (day) => {
     setSelectedDate(day.dateString);
@@ -48,18 +46,20 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.mainContainer}>
+      {/* Configuración de la StatusBar */}
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
+
       <View style={styles.containerSVG}>
         <SvgTop />
       </View>
 
-
       <View style={styles.container}>
-
         <View style={styles.header}>
           <Text style={styles.welcomeText}>Veterinaria</Text>
           <Text style={styles.subwelcomeText}>Pequeñas Especies</Text>
           <Text style={styles.subtitle}>Gestiona tus citas y mascotas de manera fácil.</Text>
         </View>
+
         {/* Botones de acceso rápido */}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -70,13 +70,21 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('PetList')}>
+            onPress={() => navigation.navigate('PetList')}
+          >
             <Text style={styles.buttonText}>Ver Mascotas</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('Profile')}>
+            onPress={() => navigation.navigate('Profile')}
+          >
             <Text style={styles.buttonText}>Mi Perfil</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('FormStack')}
+          >
+            <Text style={styles.buttonText}>Formulario</Text>
           </TouchableOpacity>
         </View>
 
@@ -87,7 +95,6 @@ const HomeScreen = ({ navigation }) => {
           visible={modalVisible}
           onRequestClose={() => setModalVisible(false)}
         >
-          {/* TouchableWithoutFeedback envuelve un solo View */}
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
@@ -96,7 +103,9 @@ const HomeScreen = ({ navigation }) => {
                 {/* Calendario */}
                 <Calendar
                   onDayPress={handleDateSelect}
-                  markedDates={{ [selectedDate]: { selected: true, selectedColor: 'blue', selectedTextColor: 'white' } }}
+                  markedDates={{
+                    [selectedDate]: { selected: true, selectedColor: 'blue', selectedTextColor: 'white' },
+                  }}
                 />
 
                 <Text style={styles.label}>Seleccionar Mascota:</Text>
@@ -116,14 +125,17 @@ const HomeScreen = ({ navigation }) => {
                   />
                 )}
 
-                <Button title="Confirmar Cita" onPress={() => {
-                  if (selectedDate && selectedPet) {
-                    alert(`Cita agendada para el ${selectedDate} con ${selectedPet}`);
-                    setModalVisible(false);
-                  } else {
-                    alert("Por favor, complete todos los campos.");
-                  }
-                }} />
+                <Button
+                  title="Confirmar Cita"
+                  onPress={() => {
+                    if (selectedDate && selectedPet) {
+                      alert(`Cita agendada para el ${selectedDate} con ${selectedPet}`);
+                      setModalVisible(false);
+                    } else {
+                      alert("Por favor, complete todos los campos.");
+                    }
+                  }}
+                />
 
                 <Button title="Cancelar" onPress={() => setModalVisible(false)} />
               </View>
@@ -136,7 +148,6 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-
   mainContainer: {
     backgroundColor: '#f1f1f1',
     flex: 1,
@@ -153,7 +164,6 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginBottom: 20,
-
   },
   welcomeText: {
     fontSize: 60,
@@ -186,7 +196,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
-    shadowOffset:{ width:  0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     elevation: 2,
   },

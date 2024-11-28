@@ -12,12 +12,15 @@ import AppointmentScreen from './screens/AppointmentScreen';
 import PetListScreen from './screens/PetListScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import LoginScreen from './screens/LoginScreen';
+import DoctorFormScreen from './screens/DoctorFormScreen';
+import VacunaFormScreen from './screens/VacunaFormScreen';
+import MotivoConsultaScreen from './screens/MotivoConsultaScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const ProfileStack = createStackNavigator();
+const FormStack = createStackNavigator();
 
-// Stack de Perfil
 function ProfileStackScreen({ navigation }) {
   return (
     <ProfileStack.Navigator>
@@ -37,9 +40,36 @@ function ProfileStackScreen({ navigation }) {
       <ProfileStack.Screen
         name="Settings"
         component={SettingsScreen} // Solo se navega a esta pantalla cuando se hace clic en el botón
-        options={{ title: 'Configuración'}}
+        options={{ title: 'Configuración' }}
       />
     </ProfileStack.Navigator>
+  );
+}
+
+function FormStackScreen() {
+  return (
+    <FormStack.Navigator>
+      <FormStack.Screen
+        name="DoctorForm"
+        component={DoctorFormScreen}
+        options={{
+          headerShown: false,
+          title: 'Formulario Doctor',
+        }}
+      />
+      <FormStack.Screen
+        name="VacunaForm"
+        component={VacunaFormScreen}
+        options={{
+          title: 'Formulario Vacunas',
+        }}
+      />
+      <FormStack.Screen
+        name="MotivoConsulta"
+        component={MotivoConsultaScreen}
+        options={{ title: 'Motivo de Consulta' }}
+      />
+    </FormStack.Navigator>
   );
 }
 
@@ -60,6 +90,8 @@ function MainTabs() {
             iconName = 'calendar';
           } else if (route.name === 'PetList') {
             iconName = 'paw';
+          } else if (route.name === 'FormStack') {
+            iconName = 'book';
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
@@ -67,10 +99,11 @@ function MainTabs() {
         tabBarInactiveTintColor: 'gray',
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} options={{headerShown: false}} />
-      <Tab.Screen name="Profile" component={ProfileStackScreen} options={{headerShown: false}} />
-      <Tab.Screen name="Appointment" component={AppointmentScreen} options={{headerShown: false}} />
-      <Tab.Screen name="PetList" component={PetListScreen} options={{headerShown: false}} />
+      <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Profile" component={ProfileStackScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Appointment" component={AppointmentScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="PetList" component={PetListScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="FormStack" component={FormStackScreen} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }
